@@ -1,0 +1,24 @@
+# EdgeFrame — stateless iframe proxy running entirely at the Cloudflare edge.
+#
+# The application is exactly two files: this config and worker.js.
+# No KV, no Durable Objects, no external origin — every request is served at
+# the edge from a single Worker.
+
+name = "edge-frame-proxy"
+main = "worker.js"
+compatibility_date = "2025-03-01"
+workers_dev = true
+
+# Optional telemetry in the Cloudflare dashboard (no code impact).
+[observability]
+enabled = true
+
+# SECURITY: do NOT enable ALLOW_PRIVATE in production.
+# It exists only so the local test suite (test.mjs) can proxy to a fixture
+# server on 127.0.0.1. Accepted values:
+#   unset            -> block every private/reserved host (production default)
+#   "host[,host...]" -> allow-list specific private hosts (local testing)
+#   "*"/"1"/"true"   -> allow all private hosts (never use on the internet)
+#
+# [vars]
+# ALLOW_PRIVATE = "127.0.0.1"
